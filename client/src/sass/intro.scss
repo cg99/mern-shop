@@ -1,0 +1,7 @@
+.btn__cta {
+    margin-top: 1rem;
+}
+
+.btn__cta:focus, .btn__cta:active, .btn__cta:visited, .btn__cta:hover {
+    box-shadow: rgb(135, 162, 135) 0px 0px 0px 0.2rem;
+}

@@ -1,0 +1,25 @@
+.shopping__cart--table {
+    text-align: left;
+    border-bottom: 2px solid #dae0e5;
+    
+    td {
+        vertical-align: middle;
+    }
+}
+
+.tab-content {
+    padding-top: 1rem;
+}
+
+.product__add, .product__minus {
+    cursor: pointer;
+}
+
+.product__quantity {
+    margin-left: 5px;
+    margin-right: 5px
+}
+
+.product__item--cancel {
+    cursor: pointer;
+}

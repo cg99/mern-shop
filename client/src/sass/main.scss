@@ -1,0 +1,36 @@
+.product__card {
+    position: absolute;
+    background-color: #fff;
+    z-index: 1;
+    top: 25%;
+    left: -12%;
+    max-width: 250px;
+    border-radius: 20px;
+
+    img {
+        position: absolute;
+        top: -5rem;
+        left: 10%;
+    }
+
+    .product_desc {
+        // max-height: 2rem;
+        // overflow: hidden;
+    }
+
+    .product__cart--cta {
+        border: 3px solid #90b290;
+        border-radius: 30px;
+        background-color: rgb(179, 215, 187);
+        padding: 5px;
+        display: inline-flex;
+        bottom: -10%;
+        margin-left: -7%;
+        position: absolute;
+    }
+
+    .product__cart--cta:hover {
+        cursor: pointer;
+        border-color:  rgb(135, 162, 135);
+    }
+}
