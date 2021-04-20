@@ -1,23 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Col, Container, Row, Button } from 'react-bootstrap'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
-import { TiMinus, TiPlus } from 'react-icons/ti'
 import '../../sass/products.scss';
 import '../../sass/product.scss';
 import { useParams } from 'react-router';
 import Axios from 'axios';
+import Quantity from '../Quantity';
+import IProduct from '../../interfaces/IProduct';
+import ICartProduct from '../../interfaces/ICartProduct';
+import { Redirect } from 'react-router-dom';
 
-interface IProduct {
-    code: String,
-    name: String,
-    description: String,
-    weight: String,
-    image: String,
-    price: Number,
-    available: Boolean,
-    stock: Number,
-    images: Array<string>
-}
 
 interface IProductRouteParams {
     id: string;
@@ -26,7 +18,10 @@ interface IProductRouteParams {
 
 const Product: React.FC = () => {
     const { id } = useParams<IProductRouteParams>();
+    const [imageBox, setImageBox] = useState<string | null>(null);
     const [product, setProduct] = useState<IProduct | null>(null);
+    const [quantity, setQuantity] = useState<number>(1);
+    const [added, setAdded] = useState<boolean>(false);
 
     const baseURL: string = window.location.origin.toString();
 
@@ -36,9 +31,66 @@ const Product: React.FC = () => {
                 setProduct(res.data.product[0]);
             })
             .catch(err => console.log(err))
-    }, [baseURL, id])
+    }, [baseURL, id]);
 
-    const [imageBox, setImageBox] = useState<string | null>(null);
+
+    const cartId: string | null = localStorage.getItem("ecomAccessToken"); // access token of user
+    
+    const getCart = () => {
+        if (!cartId) {
+            <Redirect to="/signin" />
+            return;
+        }
+
+        const getCart = localStorage.getItem(cartId);
+        let cart: any;
+        if (getCart) {
+            cart = JSON.parse(getCart);
+        } 
+        return cart;
+    }
+
+    useEffect(() => {
+        const carty = getCart();
+        carty.forEach((cartItem: ICartProduct) => cartItem.id === product?.code ? setAdded(true) : setAdded(false));
+    }, [getCart, product])
+
+    const saveCart = (cartObj: {}) => {
+        const stringified = JSON.stringify(cartObj);
+
+        if (!cartId) {
+            <Redirect to="/signin" />
+            return;
+        }
+
+        localStorage.setItem(cartId, stringified);
+    }
+
+    const removeFromCart = () => {
+        const c = getCart();
+        const CART = c.filter((cartItem: ICartProduct) => cartItem.id !== product?.code);
+
+        saveCart(CART);
+        setAdded(false);
+    }
+
+    const addToCart = () => {
+        let CART = getCart();
+        if (!CART) CART = [];
+
+        const cartItem: ICartProduct = {
+            id: product?.code,
+            name: product?.name,
+            quantity,
+            price: product?.price
+        };
+
+        CART.push(cartItem);
+
+        saveCart(CART);
+
+        setAdded(true);
+    }
 
     return (
         <Container>
@@ -48,14 +100,12 @@ const Product: React.FC = () => {
                         {
                             (product.images.length !== 0) &&
                             product.images.map((pic: string, i: number) => (
-                                <img key={i} className="my-2 img-fluid product-image"
+                                <img key={i} className="my-2 img-fluid product__image"
                                     src={baseURL + '/images/' + pic}
                                     onClick={() => setImageBox(pic)}
-                                    alt="product image" />
+                                    alt={`product ${i}`} />
                             ))
                         }
-
-                        {/* <img className="img-fluid product__image--active" src="https://via.placeholder.com/140" alt="side place" /> */}
                     </Col>
 
                     <Col className="col-5 d-flex justify-content-center">
@@ -68,47 +118,56 @@ const Product: React.FC = () => {
                         <Card>
                             <Card.Body className="text-left">
 
-                                <div className="card-title h3">{product.name}</div>
+                                <div className="card-title h3">{product?.name}</div>
 
-                                <table className="product-table" style={{ width: '100%' }}>
+                                <table className="product__table" style={{ width: '100%' }}>
                                     <tbody>
-                                        <tr>
-                                            <th>Available: </th>
-                                            <td>{product.stock > 0 ? 'Yes' : 'No'}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Weight: </th>
-                                            <td>{product.weight}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Calories: </th>
-                                            <td>309 kCal</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Ingredients: </th>
-                                            <td>
-                                                <ul>
-                                                    <li>Pumkin</li>
-                                                    <li>Butter</li>
-                                                </ul>
-                                            </td>
-                                        </tr>
+                                        {product.stock &&
+                                            <tr>
+                                                <th>Available: </th>
+                                                <td>{product.stock > 0 ? 'Yes' : 'No'}</td>
+                                            </tr>
+                                        }
+
+                                        {product.weight &&
+                                            <tr>
+                                                <th>Weight: </th>
+                                                <td>{product.weight}</td>
+                                            </tr>
+                                        }
+
+                                        {product.calories &&
+                                            <tr>
+                                                <th>Calories: </th>
+                                                <td>{product.calories}</td>
+                                            </tr>
+                                        }
+
+                                        {product.ingredients &&
+                                            <tr>
+                                                <th>Ingredients: </th>
+                                                <td>
+                                                    <ul>
+                                                        {product.ingredients.map((ingredient, idx) => (
+                                                            <li key={idx}>{ingredient}</li>
+                                                        ))}
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        }
+
                                         <tr>
                                             <th>Description: </th>
                                             <td>
                                                 <Card.Text>
-                                                    {product.description}
+                                                    {product?.description}
                                                 </Card.Text>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th>Quantity: </th>
                                             <td>
-                                                <div>
-                                                    <TiMinus className="product__add" />
-                                                    <span className="product__quantity"> 2 </span>
-                                                    <TiPlus className="product__minus" />
-                                                </div>
+                                                <Quantity stock={product.stock} quantity={quantity} setQuantity={setQuantity} />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -116,17 +175,23 @@ const Product: React.FC = () => {
 
 
                                 <div className="d-flex justify-content-between align-items-center mt-3">
-                                    <div style={{ color: '#006800', fontSize: '2rem' }}>Rs {product.price}</div>
 
-                                    <Button size={'sm'} variant="primary" style={{
-                                        borderRadius: "30px",
-                                        padding: "5px 10px",
-                                    }}>
+                                    <div style={{ color: '#006800', fontSize: '2rem' }}>
+                                        Rs {product?.price}
+                                    </div>
+
+                                    <Button size={'sm'} variant="primary"
+                                        style={{
+                                            borderRadius: "30px",
+                                            padding: "5px 10px",
+                                        }}
+                                        onClick={added ? removeFromCart : addToCart}
+                                    >
                                         <AiOutlineShoppingCart />
                                         <span style={{
                                             fontSize: "11px",
                                             verticalAlign: "text-bottom"
-                                        }}> ADD TO CART</span>
+                                        }}> {added ? "ADDED TO CART" : "ADD TO CART"} </span>
                                     </Button>
                                 </div>
                             </Card.Body>
@@ -134,7 +199,7 @@ const Product: React.FC = () => {
                     </Col>
                 </Row>
             }
-        </Container>
+        </Container >
     )
 }
 

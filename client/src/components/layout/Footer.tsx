@@ -10,9 +10,9 @@ export default function Footer() {
                 <Container>
                     <Row>
                         <Col className="text-left">made with 💚️ by aim</Col>
-                        <Col className="text-left">@ 2020 vegan dairy nepal</Col>
+                        <Col className="text-left">@ 2020 vegan foods nepal</Col>
                         <Col className="text-right">
-                            <a href="#facebook" className="text-dark">
+                            <a href="#facebook" className="text-dark mr-1">
                                 <FaFacebookF />
                             </a>
                             <a href="#instagram" className="text-dark">

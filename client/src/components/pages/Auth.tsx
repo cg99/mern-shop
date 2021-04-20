@@ -1,7 +1,7 @@
 import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
-import useToken from '../useToken';
+import useToken from '../../helpers/useToken';
 
 const Auth = (props: { component: React.ReactNode; }) => {
 

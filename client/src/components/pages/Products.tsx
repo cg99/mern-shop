@@ -3,23 +3,13 @@ import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import '../../sass/products.scss';
+import IProduct from '../../interfaces/IProduct';
+import Axios from 'axios';
 
-import Axios from 'axios'
 
-
-interface Product {
-    code: String,
-    name: String,
-    description: String,
-    weight: String,
-    image: String,
-    price: Number,
-    available: Boolean,
-    stock: Number
-}
 
 const AllProducts: React.FC = () => {
-    const [products, setProducts] = useState<Array<Product>>([]);
+    const [products, setProducts] = useState<Array<IProduct>>([]);
 
     useEffect(() => {
         Axios.get('api/products')

@@ -2,7 +2,7 @@ import Axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
-import useToken from '../useToken';
+import useToken from '../../helpers/useToken';
 
 
 interface User {

@@ -1,12 +1,12 @@
-.product-table tbody th {
+.product__table tbody th {
     padding-right: 4rem;
     vertical-align: initial;
 }
 
-.product-table ul{
+.product__table ul{
     padding-left: 1rem;
 }
 
-.product-image:active, .product-image:hover {
+.product__image:active, .product__image:hover {
     border: 3px solid #87a287;
 }

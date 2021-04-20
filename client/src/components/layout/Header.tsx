@@ -16,7 +16,7 @@ const Header = () => {
                     <Navbar>
                         <Link className="navbar-brand text-dark" to="/">
                             <img
-                                alt=""
+                                alt="vegan foods nepal"
                                 src={logo}
                                 width="90"
                                 height="90"

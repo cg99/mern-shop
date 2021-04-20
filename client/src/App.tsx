@@ -17,7 +17,7 @@ import Product from './components/pages/Product';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 
-import useToken from './components/useToken';
+import useToken from './helpers/useToken';
 import Axios from 'axios';
 import { useEffect } from 'react';
 
