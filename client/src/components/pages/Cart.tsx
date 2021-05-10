@@ -1,4 +1,3 @@
-import React from 'react';
 import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap';
 import Items from '../cart/Items'
 import ShippingForm from '../cart/ShippingForm'
@@ -6,7 +5,10 @@ import ContactForm from '../cart/ContactForm'
 import BillingForm from '../cart/BillingForm'
 import '../../sass/cart.scss';
 
-const Cart = () => {
+
+
+const Cart: React.FC = () => {
+
     return (
         <div className="my-4">
             <Container>

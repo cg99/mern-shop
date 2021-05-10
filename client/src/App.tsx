@@ -1,5 +1,5 @@
 // import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect, RouteProps } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -17,38 +17,8 @@ import Product from './components/pages/Product';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 
-import useToken from './helpers/useToken';
-import Axios from 'axios';
-import { useEffect } from 'react';
+import AuthRoute from './helpers/AuthRoute';
 
-const AuthRoute = ({ component: Component, ...rest }: RouteProps) => { // this has yet to be implemented properly
-  const { token, setToken } = useToken();
-
-  useEffect(() => {
-    Axios.get('/api/auth', { // user authorization 
-      headers: {
-        'Authorization': `Bearer ${JSON.stringify(token)}`
-      }
-    }).then(res => {
-        if (res.data.success !== true) {
-          setToken(null);
-          <Redirect to="/signin" />
-        }
-      })
-      .catch(err => console.log(err));
-  }, []);
-
-  if (!Component) return null;
-
-  return (
-    <Route
-      {...rest}
-      render={routeProps => (
-        token ? <Component {...routeProps} /> : <Redirect to="/signin" />
-      )}
-    />
-  );
-}
 
 function App() {
 

@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
 import { TiMinus, TiPlus } from 'react-icons/ti'
 
 const Quantity = (props: any) => {
+    const stock = props.stock || props.quantity * 5;
 
     return (
         <div>
@@ -10,7 +10,7 @@ const Quantity = (props: any) => {
             />
             <span className="product__quantity"> {props.quantity} </span>
             <TiPlus className="product__add"
-                onClick={() => { if (props.quantity < props.stock) props.setQuantity(props.quantity + 1) }}
+                onClick={() => { if (props.quantity < stock) props.setQuantity(props.quantity + 1) }}
             />
         </div>
     )

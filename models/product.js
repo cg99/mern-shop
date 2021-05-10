@@ -20,5 +20,5 @@ const ProductSchema = new Schema({
     }
 });
 
-//Export function to create "UserModel" model class
+//Export function to create "ProductModel" model class
 module.exports = mongoose.model('products', ProductSchema);

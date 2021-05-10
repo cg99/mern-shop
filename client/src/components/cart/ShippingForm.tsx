@@ -1,5 +1,4 @@
-import React from 'react'
-import { Col, Tab, Button, Form } from 'react-bootstrap';
+import { Col, Button, Form } from 'react-bootstrap';
 
 const ShippingForm = () => {
     return (

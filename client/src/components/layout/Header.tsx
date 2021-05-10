@@ -1,18 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Navbar, Nav, Form } from 'react-bootstrap';
 import logo from '../../logo.jpg';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { FaRegUser } from 'react-icons/fa';
 import { FiSearch } from 'react-icons/fi';
+import useToken from '../../helpers/useToken';
+import ICartProduct from '../../interfaces/ICartProduct';
 
 
 
 const Header = () => {
+    const { token } = useToken();
+    const [cartSize, setCartSize] = useState<number>(0);
+
+    useEffect(() => {
+        if (token) {
+            const localCart = localStorage.getItem(token); // cart of user
+            if (localCart) {
+                const parsedCart = JSON.parse(localCart);
+                setCartSize(parsedCart.length);
+            }
+        }
+
+    }, [token])
+
     return (
         <div>
             <Container>
-                <Navbar bg="none" variant="light" style={{zIndex: 1}}>
+                <Navbar bg="none" variant="light" style={{ zIndex: 1 }}>
                     <Navbar>
                         <Link className="navbar-brand text-dark" to="/">
                             <img
@@ -39,12 +55,15 @@ const Header = () => {
 
                         <Link to="/cart" className="mx-2 text-dark">
                             <AiOutlineShoppingCart />
-                            <span className="badge badge-pill badge-success" style={{ 
-                                fontSize: '10px',
-                                position: 'absolute',
-                                color: '#fff',
-                                backgroundColor: '#87a287'
-                            }}> 3 </span>
+                            {
+                                cartSize > 0 &&
+                                <span className="badge badge-pill badge-success" style={{
+                                    fontSize: '10px',
+                                    position: 'absolute',
+                                    color: '#fff',
+                                    backgroundColor: '#87a287'
+                                }}> {cartSize} </span>
+                            }
                         </Link>
                     </Form>
                 </Navbar>

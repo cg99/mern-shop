@@ -49,7 +49,7 @@ const SignIn = () => {
     }
 
 
-    const { token, setToken } = useToken();
+    const { token,  } = useToken();
 
     useEffect(() => {
         if(token) {

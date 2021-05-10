@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Card, Col, Container, Row, Button } from 'react-bootstrap'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
 import '../../sass/products.scss';
@@ -25,7 +25,7 @@ const Product: React.FC = () => {
 
     const baseURL: string = window.location.origin.toString();
 
-    useEffect(() => {
+    useEffect(() => { // get product details
         Axios.get(baseURL + '/api/product/' + id)
             .then(res => {
                 setProduct(res.data.product[0]);
@@ -34,26 +34,35 @@ const Product: React.FC = () => {
     }, [baseURL, id]);
 
 
-    const cartId: string | null = localStorage.getItem("ecomAccessToken"); // access token of user
-    
-    const getCart = () => {
+    const cartId: string | null = localStorage.getItem("ecomAccessToken"); // access token of user as card ID
+
+    const getCart = useCallback(() => {
         if (!cartId) {
             <Redirect to="/signin" />
             return;
         }
 
-        const getCart = localStorage.getItem(cartId);
+        const getCart = localStorage.getItem(JSON.parse(cartId));
         let cart: any;
         if (getCart) {
             cart = JSON.parse(getCart);
-        } 
-        return cart;
-    }
+        }
 
-    useEffect(() => {
-        const carty = getCart();
-        carty.forEach((cartItem: ICartProduct) => cartItem.id === product?.code ? setAdded(true) : setAdded(false));
-    }, [getCart, product])
+        return cart;
+    }, [cartId]);
+
+    useEffect(() => { // checking if the product is already added
+        const carty = getCart() || [];
+        const cartSize = carty.length;
+
+        for (let i = 0; i < cartSize; i++) {
+            if (carty[i].id === id) {
+                setAdded(true);
+                break;
+            }
+        }
+    }, [product])
+
 
     const saveCart = (cartObj: {}) => {
         const stringified = JSON.stringify(cartObj);
@@ -63,7 +72,7 @@ const Product: React.FC = () => {
             return;
         }
 
-        localStorage.setItem(cartId, stringified);
+        localStorage.setItem(JSON.parse(cartId), stringified);
     }
 
     const removeFromCart = () => {
@@ -75,17 +84,21 @@ const Product: React.FC = () => {
     }
 
     const addToCart = () => {
+        if (added) return;
+
         let CART = getCart();
         if (!CART) CART = [];
 
-        const cartItem: ICartProduct = {
+        const newCartItem: ICartProduct = {
             id: product?.code,
             name: product?.name,
             quantity,
-            price: product?.price
+            price: product?.price,
+            stock: product?.stock
         };
 
-        CART.push(cartItem);
+
+        CART.push(newCartItem);
 
         saveCart(CART);
 

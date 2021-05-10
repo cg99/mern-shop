@@ -10,6 +10,8 @@ const UserModel = require('../models/user.js');
 const authenticateToken = require('./auth.js');
 const getAllProducts = require('./products.js');
 const getProduct = require('./product.js');
+const getAllOrders = require('./order.js');
+
 
 
 
@@ -42,6 +44,12 @@ router.get('/products', getAllProducts, function (req, res) {
 
 // one product
 router.get('/product/:id', getProduct, function (req, res) {
+    res.status(200).send({ success: true })
+})
+
+
+// all orders
+router.get('/orders', getAllOrders, function (req, res) {
     res.status(200).send({ success: true })
 })
 
@@ -107,6 +115,8 @@ router.post('/signin', jsonParser, function (req, res) {
 
 
 // authenticate
-router.get('/auth', authenticateToken)
+router.get('/auth', authenticateToken, (req, res) => {
+    res.status(200).send({ success: true });
+})
 
 module.exports = router
