@@ -10,11 +10,13 @@ import IProduct from '../../interfaces/IProduct';
 import ICartProduct from '../../interfaces/ICartProduct';
 import { Redirect } from 'react-router-dom';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { RootStore } from '../../Store';
+import { AddToCart, RemoveFromCart } from '../../actions/CartActions';
 
 interface IProductRouteParams {
     id: string;
 }
-
 
 const Product: React.FC = () => {
     const { id } = useParams<IProductRouteParams>();
@@ -33,81 +35,51 @@ const Product: React.FC = () => {
             .catch(err => console.log(err))
     }, [baseURL, id]);
 
-
-    const cartId: string | null = localStorage.getItem("ecomAccessToken"); // access token of user as card ID
-
-    const getCart = useCallback(() => {
-        if (!cartId) {
-            <Redirect to="/signin" />
-            return;
-        }
-
-        const getCart = localStorage.getItem(JSON.parse(cartId));
-        let cart: any;
-        if (getCart) {
-            cart = JSON.parse(getCart);
-        }
-
-        return cart;
-    }, [cartId]);
+    const cartState = useSelector((state: RootStore) => state.cart);
 
     useEffect(() => { // checking if the product is already added
-        const carty = getCart() || [];
-        const cartSize = carty.length;
+        const cart = cartState.products || [];
+        const cartSize = cart.length;
 
         for (let i = 0; i < cartSize; i++) {
-            if (carty[i].id === id) {
+            if (cart[i].id === id) {
                 setAdded(true);
                 break;
             }
         }
     }, [product])
 
-
-    const saveCart = (cartObj: {}) => {
-        const stringified = JSON.stringify(cartObj);
-
-        if (!cartId) {
-            <Redirect to="/signin" />
-            return;
-        }
-
-        localStorage.setItem(JSON.parse(cartId), stringified);
-    }
+    const dispatch = useDispatch();
 
     const removeFromCart = () => {
-        const c = getCart();
-        const CART = c.filter((cartItem: ICartProduct) => cartItem.id !== product?.code);
-
-        saveCart(CART);
+        dispatch(RemoveFromCart(id))
         setAdded(false);
     }
 
     const addToCart = () => {
         if (added) return;
 
-        let CART = getCart();
+        let CART = cartState.products;
         if (!CART) CART = [];
 
-        const newCartItem: ICartProduct = {
-            id: product?.code,
-            name: product?.name,
-            quantity,
-            price: product?.price,
-            stock: product?.stock
-        };
+        if (product) {
+            const newCartItem: ICartProduct = {
+                id: product?.code,
+                name: product?.name,
+                quantity,
+                price: product?.price,
+                stock: product?.stock
+            };
 
-
-        CART.push(newCartItem);
-
-        saveCart(CART);
+            dispatch(AddToCart(newCartItem));
+        }
 
         setAdded(true);
     }
 
     return (
         <Container>
-            { product &&
+            {product &&
                 <Row>
                     <Col className="col-2">
                         {

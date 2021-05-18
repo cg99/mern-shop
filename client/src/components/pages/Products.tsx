@@ -1,30 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import '../../sass/products.scss';
-import IProduct from '../../interfaces/IProduct';
-import Axios from 'axios';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { GetProducts } from '../../actions/ProductActions';
+import { RootStore } from '../../Store';
 
 
 const AllProducts: React.FC = () => {
-    const [products, setProducts] = useState<Array<IProduct>>([]);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        Axios.get('api/products')
-            .then(res => {
-                setProducts(res.data.products);
-            })
-            .catch(err => console.log(err))
-    }, [])
+        dispatch(GetProducts());
+    }, [dispatch])
 
+    const productsState = useSelector((state: RootStore) => state.products);
 
     return (
         <Container>
             <Row>
 
-                {products && products.map((p, i) => (
+                {productsState.products && productsState.products.map((p, i) => (
                     <Col key={i} className="d-flex justify-content-center">
 
                         <Card style={{ width: '16rem' }}>

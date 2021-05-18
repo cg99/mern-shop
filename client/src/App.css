@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Ranchers&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Ranchers&display=swap");
 
 .App {
   text-align: center;
@@ -38,3 +38,9 @@
     transform: rotate(360deg);
   }
 }
+
+/* Color Scheme
+#F4F3F2 bg white
+#C0A9BD purple
+#94A7AE blue
+#64766A green */

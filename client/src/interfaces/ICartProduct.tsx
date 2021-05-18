@@ -1,7 +1,7 @@
 export default interface ICartProduct {
-    id: string | undefined,
-    name: string | undefined,
-    price: number | undefined,
-    quantity: number | undefined,
-    stock: number | undefined
+    id: string,
+    name: string,
+    price: number,
+    quantity?: number,
+    stock?: number
 }

@@ -5,25 +5,21 @@ import logo from '../../logo.jpg';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { FaRegUser } from 'react-icons/fa';
 import { FiSearch } from 'react-icons/fi';
-import useToken from '../../helpers/useToken';
-import ICartProduct from '../../interfaces/ICartProduct';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { RootStore } from '../../Store';
+import { GetCart } from '../../actions/CartActions';
 
 
 const Header = () => {
-    const { token } = useToken();
-    const [cartSize, setCartSize] = useState<number>(0);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        if (token) {
-            const localCart = localStorage.getItem(token); // cart of user
-            if (localCart) {
-                const parsedCart = JSON.parse(localCart);
-                setCartSize(parsedCart.length);
-            }
-        }
+        dispatch(GetCart())
+    }, [dispatch])
 
-    }, [token])
+    const cartState = useSelector((state: RootStore) => state.cart);
+
+    const cartSize = cartState.products.length;
 
     return (
         <div>

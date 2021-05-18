@@ -4,21 +4,13 @@ import { IoIosArrowBack } from 'react-icons/io'
 import Item from './Item';
 import { useEffect, useState } from 'react';
 import ICartProduct from '../../interfaces/ICartProduct';
-import useToken from '../../helpers/useToken';
+import { useSelector } from 'react-redux';
+import { RootStore } from '../../Store';
 
 const Items = () => {
-    const { token } = useToken();
-    const [cart, setCart] = useState<Array<ICartProduct>>([]);
 
-    useEffect(() => {
-        if(token) {
-            const localCart = localStorage.getItem(token); // cart of user
-            if (localCart) {
-                setCart(JSON.parse(localCart));
-            }
-        }
-        
-    }, [token])
+    const cartState = useSelector((state: RootStore) => state.cart);
+    const cart: Array<ICartProduct> = cartState.products;
 
     return (
         <div>
@@ -32,8 +24,8 @@ const Items = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {cart.length >= 1 && cart.map(item =>
-                        <Item key={item.id} product={item} cart={cart} setCart={setCart} />
+                    {cart && cart.length > 0 && cart.map((item) =>
+                        <Item key={item?.id} product={item} cart={cart} />
                     )}
                 </tbody>
             </Table>
