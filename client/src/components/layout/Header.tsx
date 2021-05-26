@@ -57,7 +57,7 @@ const Header = () => {
                                     fontSize: '10px',
                                     position: 'absolute',
                                     color: '#fff',
-                                    backgroundColor: '#87a287'
+                                    // backgroundColor: '#87a287'
                                 }}> {cartSize} </span>
                             }
                         </Link>

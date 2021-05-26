@@ -68,7 +68,8 @@ const Product: React.FC = () => {
                 name: product?.name,
                 quantity,
                 price: product?.price,
-                stock: product?.stock
+                stock: product?.stock,
+                image: product?.image
             };
 
             dispatch(AddToCart(newCartItem));

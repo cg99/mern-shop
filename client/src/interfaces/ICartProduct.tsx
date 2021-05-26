@@ -3,5 +3,6 @@ export default interface ICartProduct {
     name: string,
     price: number,
     quantity?: number,
-    stock?: number
+    stock?: number,
+    image?: string
 }

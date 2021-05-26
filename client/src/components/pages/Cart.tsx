@@ -1,14 +1,14 @@
-import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import Items from '../cart/Items'
-import ShippingForm from '../cart/ShippingForm'
-import ContactForm from '../cart/ContactForm'
-import BillingForm from '../cart/BillingForm'
+
 import '../../sass/cart.scss';
+import React from 'react';
+import OrderForm from '../cart/OrderForm';
 
 
 
 const Cart: React.FC = () => {
-
+    
     return (
         <div className="my-4">
             <Container>
@@ -23,23 +23,14 @@ const Cart: React.FC = () => {
                         padding: "2rem",
                         margin: "auto"
                     }}>
-                        <h2 className="text-left mb-3">Payment Info</h2>
-                        <Tabs defaultActiveKey="shipping" id="uncontrolled-tab-example">
-                            <Tab eventKey="shipping" title="Shipping">
-                                <ShippingForm />
-                            </Tab>
-                            <Tab eventKey="contact" title="Contact">
-                                <ContactForm />
-                            </Tab>
-                            <Tab eventKey="billing" title="Billing">
-                                <BillingForm />
-                            </Tab>
-                        </Tabs>
+                        <h2 className="text-left mb-3">Order Information</h2>
+                        <OrderForm />
                     </Col>
                 </Row>
             </Container>
         </div>
     )
 }
+
 
 export default Cart

@@ -23,7 +23,7 @@ const saveCart = (cart: Array<ICartProduct>) => {
 export const GetCart = () => async (dispatch: Dispatch) => {
   try {
     dispatch({
-      type: "GET_CART",
+      type: "SET_CART",
       cart: getLocalCart(),
     });
   } catch (e) {
@@ -45,11 +45,12 @@ export const AddToCart =
         let alreadyExists = false;
         for (let i = 0; i < cartSize; i++) {
           if (currentCart[i].id === product.id) {
-            const { name, quantity, price, stock } = product;
+            const { name, quantity, price, stock, image } = product;
             currentCart[i].name = name;
             currentCart[i].quantity = quantity;
             currentCart[i].price = price;
             currentCart[i].stock = stock;
+            currentCart[i].image = image;
             alreadyExists = true;
             break;
           }
@@ -61,7 +62,7 @@ export const AddToCart =
       }
 
       dispatch({
-        type: "REMOVE_FROM_CART",
+        type: "SET_CART",
         cart: currentCart,
       });
     } catch (e) {
@@ -78,7 +79,7 @@ export const RemoveFromCart = (id: string) => async (dispatch: Dispatch) => {
 
   saveCart(CART);
   dispatch({
-    type: "REMOVE_FROM_CART",
+    type: "SET_CART",
     cart: CART,
   });
 };
@@ -88,7 +89,16 @@ export const SetCart =
   (cart: Array<ICartProduct>) => async (dispatch: Dispatch) => {
     saveCart(cart);
     dispatch({
-      type: "REMOVE_FROM_CART",
+      type: "SET_CART",
       cart,
     });
   };
+
+export const ClearCart = () => async (dispatch: Dispatch) => {
+  const cart: [] = [];
+  saveCart(cart);
+  dispatch({
+    type: "SET_CART",
+    cart,
+  });
+};
