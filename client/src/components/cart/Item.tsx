@@ -2,8 +2,7 @@ import Quantity from '../Quantity';
 import { IoMdClose } from 'react-icons/io'
 import React, { useEffect, useState } from 'react';
 import ICartProduct from '../../interfaces/ICartProduct';
-import { Redirect } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { RemoveFromCart, SetCart } from '../../actions/CartActions';
 
 const Item = (props: { product: ICartProduct, cart: Array<ICartProduct> }) => {
@@ -16,7 +15,8 @@ const Item = (props: { product: ICartProduct, cart: Array<ICartProduct> }) => {
         stock = props.product.stock;
         image = props.product.image;
     }
-    const [quantity, setQuantity] = useState<number | undefined>(q);
+
+    const [quantity, setQuantity] = useState<number>(q ? q : 1);
     const dispatch = useDispatch();
 
     const removeFromCart = () => {

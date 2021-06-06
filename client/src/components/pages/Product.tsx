@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, Col, Container, Row, Button } from 'react-bootstrap'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
 import '../../sass/products.scss';
@@ -8,7 +8,6 @@ import Axios from 'axios';
 import Quantity from '../Quantity';
 import IProduct from '../../interfaces/IProduct';
 import ICartProduct from '../../interfaces/ICartProduct';
-import { Redirect } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStore } from '../../Store';

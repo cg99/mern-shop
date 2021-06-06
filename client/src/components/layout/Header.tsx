@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Navbar, Nav, Form } from 'react-bootstrap';
 import logo from '../../logo.jpg';

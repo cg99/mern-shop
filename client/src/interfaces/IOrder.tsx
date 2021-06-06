@@ -20,8 +20,8 @@ export default interface IOrder {
         total_price: number
     },
     order_date: Date,
-    item: string,
-    quantity: number,
-    p_code: string,
-    price: number
+    items: Array<{
+        id: string,
+        quantity: number
+    }>
 }

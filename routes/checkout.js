@@ -10,23 +10,26 @@ const Stripe = require('stripe');
 const stripe = Stripe('sk_test_51GtmvJLXX9ZK66L1nGK0bu3g0PxK88ShHmmw13xeItx1JzRNgNQQTb7rfsbBzH6mjfIJAlgznOtCaHmsnfEhO6ms00ZHlM6m4F');
 
 router.post('/create-checkout-session', jsonParser, async (req, res) => {
-    const product = req.body;
+    
+    const data = req.body;
+    const lineItems = JSON.parse(data.items).map(item => {
+        return {
+            price_data: {
+                currency: 'usd',
+                product_data: {
+                    name: item.name,
+                },
+                unit_amount: item.price,
+            },
+            quantity: item.quantity
+        }
+    })
+    // console.log(lineItems);
 
     try {
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
-            line_items: [
-                {
-                    price_data: {
-                        currency: 'usd',
-                        product_data: {
-                            name: 'Avocado',
-                        },
-                        unit_amount: 2000,
-                    },
-                    quantity: 1,
-                },
-            ],
+            line_items: lineItems,
             mode: 'payment',
             success_url: 'http://localhost:3000/',
             cancel_url: 'http://localhost:3000/products',
