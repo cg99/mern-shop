@@ -1,3 +1,5 @@
+// not used
+
 import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
@@ -14,7 +16,7 @@ const Auth = (props: { component: React.ReactNode; }) => {
         if (!token) {
             setRedirect(true);
         }
-        
+
         Axios.get('/api/auth', { headers: { 'Authorization': `Bearer ${JSON.stringify(token)}` }, cancelToken: source.token })
             .then(res => {
                 if (res.data.success === true) {

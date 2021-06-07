@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -16,9 +16,29 @@ import Product from "./components/pages/Product";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 
-import AuthRoute from "./helpers/AuthRoute";
+//authentication
+import useToken from "./helpers/useToken";
+import { useEffect, useState } from "react";
+import Axios from "axios";
 
 function App() {
+  const { token, setToken } = useToken();
+  const source = Axios.CancelToken.source();
+
+  const [authorized, setAuthorized] = useState(false);
+
+  useEffect(() => {
+    Axios.get('api/auth', { // user authorization 
+      headers: {
+        'Authorization': `Bearer ${JSON.stringify(token)}`
+      }
+    }).then(res => res.data.success ? setAuthorized(true) : setAuthorized(false))
+      .catch(err => console.log(err));
+
+    return () => {
+      source.cancel("Request done")
+    }
+  }, []);
 
   return (
     <Router>
@@ -34,7 +54,7 @@ function App() {
           <Route path="/signup">
             <SignUp />
           </Route>
-          <AuthRoute path="/profile" component={Profile} />
+
           <Route path="/products">
             <Products />
           </Route>
@@ -44,8 +64,21 @@ function App() {
           <Route path="/cart">
             <Cart />
           </Route>
-          <AuthRoute path="/recipes" component={Recipes} />
+
+          {authorized ? (
+            <>
+              <Route path="/profile">
+                <Profile />
+              </Route>
+              <Route path="/recipes">
+                <Recipes />
+              </Route>
+            </>
+          ) : (<Redirect to="/signin" />)
+          }
+
           <Route component={Page404} />
+
         </Switch>
 
         <Footer />
