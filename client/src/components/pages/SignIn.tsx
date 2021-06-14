@@ -2,6 +2,7 @@ import Axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
+import useInput from '../../helpers/useInput';
 import useToken from '../../helpers/useToken';
 
 
@@ -49,10 +50,10 @@ const SignIn = () => {
     }
 
 
-    const { token,  } = useToken();
+    const { token, } = useToken();
 
     useEffect(() => {
-        if(token) {
+        if (token) {
             <Redirect to="/profile" />
         }
     }, [token])

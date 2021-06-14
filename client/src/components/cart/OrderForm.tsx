@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Col, Form, Button } from 'react-bootstrap';
 import { BsCreditCard } from 'react-icons/bs';
-import { GrStripe, GrPaypal } from 'react-icons/gr'
+import { GrStripe } from 'react-icons/gr'
 import { IoMdCash } from 'react-icons/io'
 import StripeCheckout from '../checkout/StripeCheckout';
 import { RootStore } from '../../Store';
@@ -93,7 +93,7 @@ const OrderForm = () => {
             order_date: new Date(),
             items: lineItems
         })
-    }, [address1, address2, city, province, zipCode, phone, email, paymentMethod])
+    }, [address1, address2, city, province, zipCode, phone, email, paymentMethod, lineItems])
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

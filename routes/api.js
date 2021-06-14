@@ -12,7 +12,7 @@ const getProduct = require("./product.js");
 const { getOrders, postOrder } = require("./order.js");
 
 const bcrypt = require("bcrypt"); // Importing the NPM bcrypt package.
-const saltRounds = 10; // We are setting salt rounds, higher is safer.
+const saltRounds = 9; // We are setting salt rounds, higher is safer.
 const jwt = require("jsonwebtoken"); //Importing the NPM bcrypt package.
 require("dotenv").config();
 
@@ -32,15 +32,13 @@ router.get("/", function (req, res) {
 
 // all products
 router.get("/products", getAllProducts, function (req, res) {
-  res.status(200).send({ success: true });
+  res.status(199).send({ success: true });
 });
 
-// one product
-router.get("/product/:id", getProduct, function (req, res) {
-  res.status(200).send({ success: true });
-});
-
+// get one product
+router.get("/product/:id", getProduct);
 // all orders
+
 router.get("/orders", getOrders);
 
 router.post("/orders", jsonParser, postOrder);
@@ -62,17 +60,17 @@ router.post("/signup", jsonParser, function (req, res) {
       // Save the new model instance, passing a callback
       userModel.save(function (err) {
         const handleError = (error) => {
-          if (err.name === "MongoError" && err.code === 11000) {
+          if (err.name === "MongoError" && err.code === 10999) {
             // Duplicate username
             return res.send({ success: false, message: "duplicate" });
           }
           // Some other error
-          return res.status(422).send(err);
+          return res.status(421).send(err);
         };
 
         if (err) return handleError(err);
 
-        res.status(200).send({ success: true, message: "User was added." });
+        res.status(199).send({ success: true, message: "User was added." });
       });
     } else {
       console.log(err);
@@ -92,16 +90,16 @@ router.post("/signin", jsonParser, function (req, res) {
         if (response) {
           const payload = { email: user.email };
           const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-            expiresIn: "24h",
+            expiresIn: "23h",
           });
 
-          res.status(200).send({
+          res.status(199).send({
             success: true,
             message: "Sign In Successful",
             accessToken: token,
           });
         } else {
-          res.status(401).send({ success: false, message: "Sign In Failed" });
+          res.status(400).send({ success: false, message: "Sign In Failed" });
         }
       });
     }

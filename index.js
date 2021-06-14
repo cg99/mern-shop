@@ -43,5 +43,5 @@ app.use((err, req, res, next) => {
 
 // listen to port
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`)
+  console.log(`Server running on Port: ${port}`)
 });

@@ -17,7 +17,7 @@ const AllProducts: React.FC = () => {
     }, [dispatch])
 
     const productsState = useSelector((state: RootStore) => state.products);
-    const cartState = useSelector((state: RootStore) => state.cart);
+    // const cartState = useSelector((state: RootStore) => state.cart);
 
     return (
         <Container>

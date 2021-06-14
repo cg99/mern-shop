@@ -17,12 +17,14 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 
 //authentication
+import AuthRoute from "./helpers/AuthRoute";
 import useToken from "./helpers/useToken";
 import { useEffect, useState } from "react";
 import Axios from "axios";
+import Admin from "./components/pages/Admin";
 
 function App() {
-  const { token, setToken } = useToken();
+  const { token } = useToken();
   const source = Axios.CancelToken.source();
 
   const [authorized, setAuthorized] = useState(false);
@@ -38,7 +40,7 @@ function App() {
     return () => {
       source.cancel("Request done")
     }
-  }, []);
+  }, [token, source]);
 
   return (
     <Router>
@@ -65,17 +67,19 @@ function App() {
             <Cart />
           </Route>
 
-          {authorized ? (
-            <>
-              <Route path="/profile">
-                <Profile />
-              </Route>
-              <Route path="/recipes">
-                <Recipes />
-              </Route>
-            </>
-          ) : (<Redirect to="/signin" />)
-          }
+          <Route path="/admin">
+            <Admin />
+          </Route>
+
+
+          <AuthRoute path="/profile">
+            <Profile />
+          </AuthRoute>
+
+          <Route path="/recipes">
+            <Recipes />
+          </Route>
+
 
           <Route component={Page404} />
 

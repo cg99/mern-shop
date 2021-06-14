@@ -1,7 +1,7 @@
-const ProductModel = require('../models/product.js'); 
+const ProductModel = require('../models/product.js');
 
 
-const getProduct = (req, res) => {
+const getProduct = (req, res, next) => {
     const pID = req.params.id;
 
     ProductModel.find({ code: pID }, (err, product) => {
@@ -11,7 +11,8 @@ const getProduct = (req, res) => {
         }
         if (product) {
             // console.log(products)
-            res.status(200).json({ product: product })
+            res.status(200).json({ success: true, product: product });
+            next();
         }
     });
 }
