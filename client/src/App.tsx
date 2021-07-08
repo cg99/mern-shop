@@ -30,7 +30,6 @@ function App() {
   const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
-    console.log(authorized);
     Axios.get('api/auth', { // user authorization 
       headers: {
         'Authorization': `Bearer ${JSON.stringify(token)}`
