@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Navbar, Nav, Form } from 'react-bootstrap';
-import logo from '../../logo.jpg';
+import logo from '../../images/logo.png';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { FaRegUser } from 'react-icons/fa';
 import { FiSearch } from 'react-icons/fi';
@@ -30,8 +30,8 @@ const Header = () => {
                             <img
                                 alt="vegan foods nepal"
                                 src={logo}
-                                width="90"
-                                height="90"
+                                width="120"
+                                height="auto"
                                 className="d-inline-block align-top"
                             /></Link>
                     </Navbar>

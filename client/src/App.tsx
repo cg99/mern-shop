@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -30,6 +30,7 @@ function App() {
   const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
+    console.log(authorized);
     Axios.get('api/auth', { // user authorization 
       headers: {
         'Authorization': `Bearer ${JSON.stringify(token)}`
